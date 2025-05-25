@@ -1,11 +1,15 @@
 <?php
 include 'ControllerAgendamentos.php';
+include 'Database.php';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $erros = [];
 
     if(empty($_POST['id'])){
         $erros[] = 'ID do agendamento é obrigatório!';
+        if(!is_numeric($_POST['id'])){
+            $erros[] = 'O ID tem que ser numerico';
+        }
     }
     if(empty($_POST['data_inicial'])){
         $erros[] = 'Data Inicial Obrigatória';
@@ -39,16 +43,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             echo "<p style='color:red;'>$erro</p>";
         }
     } else {
-        $host = 'localhost';
-        $usuario = 'root';
-        $senha = '';
-        $banco = 'tb_agendamentos';
-
-        $connection = new mysqli($host, $usuario, $senha, $banco);
-
-        if($connection->connect_error){
-            die("Falha na conexão: " . $connection->connect_error);
-        }
+        $connection = Database::connect();
 
         $compromisso = new Compromisso($connection, $cliente, $descricao, $titulo, $data_fim, $data_inicio);
 

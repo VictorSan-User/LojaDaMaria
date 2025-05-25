@@ -23,7 +23,26 @@
     </thead>
     <tbody>
       <?php
-      // Aqui entra o PHP que busca os agendamentos.
+        if(empty($agendamentos)) {
+            echo "<tr><td colspan='6' class='text-center'>Nenhum agendamento encontrado</td></tr>";
+        } else {
+            foreach($agendamentos as $ag) {
+                echo "<tr>";
+                echo "<td>{$ag['id']}</td>";
+                echo "<td>" . date('d/m/Y', strtotime($ag['data_inicial'])) . "</td>";
+                echo "<td>" . date('d/m/Y', strtotime($ag['data_final'])) . "</td>";
+                echo "<td>{$ag['titulo']}</td>";
+                echo "<td>{$ag['cliente']}</td>";
+                echo "<td>
+                      <a href='../Controllers/ControllerEditarAgendamento.php?id={$ag['id']}' class='btn btn-sm btn-primary me-2'>Editar</a>
+                      <a href='../Controllers/ControllerExcluirAgendamentos.php.php?id={$ag['id']}' class='btn btn-sm btn-danger' 
+                        onclick=\"return confirm('Tem certeza que deseja excluir o agendamento \"{$ag['titulo']}\"?');\">
+                        Excluir
+                        </a>
+                      </td>";
+                echo "</tr>";
+            }
+          }
       ?>
     </tbody>
   </table>

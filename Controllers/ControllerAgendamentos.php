@@ -60,7 +60,7 @@ class Compromisso{
         }
     }
     public static function listarFuturos($connect) {
-    $hoje = date('Y-m-d');
+    $hoje = date('d-m-Y');
     $stmt = $connect->prepare("SELECT * FROM TB_AGENDAMENTOS WHERE data_inicial >= ? ORDER BY data_inicial ASC");
     $stmt->bind_param("s", $hoje);
     $stmt->execute();
@@ -75,7 +75,7 @@ class Compromisso{
     }
 
     public static function listarPassados($connect) {
-        $hoje = date('Y-m-d');
+        $hoje = date('d-m-Y');
         $date = $connect->prepare("SELECT * FROM TB_AGENDAMENTOS WHERE data_final < ? ORDER BY data_inicial DESC");
         $date->bind_param("s", $hoje);
         $date->execute();
