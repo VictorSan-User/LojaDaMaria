@@ -4,25 +4,15 @@ include 'ControllerAgendamentos.php';
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $erros = [];
 
-    // validacoes do serverside
-    if(empty($_POST['data_inicial'])){
-        $erros[] = 'Data Inicial Obrigatoria';
-    }
-    if(empty($_POST['data_final'])){
-        $erros[] = 'Data Final Obrigatoria';
-    }
-    if(empty($_POST['titulo'])){
-        $erros[] = 'Titulo Obrigatorio';
-    }
-    if(empty($_POST['descricao'])){
-        $erros[] = 'Descricao Obrigatoria';
-    }
-    if(empty($_POST['cliente'])){
-        $erros[] = 'Cliente Obrigatoria';
-    }
+    // validações do server-side
+    if(empty($_POST['data_inicial'])) $erros[] = 'Data Inicial Obrigatória';
+    if(empty($_POST['data_final'])) $erros[] = 'Data Final Obrigatória';
+    if(empty($_POST['titulo'])) $erros[] = 'Título Obrigatório';
+    if(empty($_POST['descricao'])) $erros[] = 'Descrição Obrigatória';
+    if(empty($_POST['cliente'])) $erros[] = 'Cliente Obrigatório';
 
     if ($_POST['data_final'] < $_POST['data_inicial']) {
-        $erros[] = 'A Data Final deve ser apoós à Data Inicial.';
+        $erros[] = 'A Data Final deve ser após à Data Inicial.';
     }
 
     $data_inicio = $_POST['data_inicial'];
@@ -30,8 +20,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $titulo = $_POST['titulo'];
     $descricao = $_POST['descricao'];
     $cliente = $_POST['cliente'];
-
-    // $compromisso = new Compromisso();
 
     if($erros){
         foreach($erros as $erro){
@@ -47,15 +35,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         $connection = new mysqli($host, $usuario, $senha, $banco);
 
-        if($conn->connect_error){
+        if($connection->connect_error){
             die("Falha na conexão: " . $connection->connect_error);
         }
 
-        //utilizei VALUES (?, ?, ?, ?, ?) pra evitar sqlinjection
-        $stmt = $connection->prepare("INSERT INTO agendamentos (data_inicial, data_final, titulo, descricao, cliente) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO tb_agendamentos (data_inicial, data_final, titulo, descricao, cliente) VALUES (?, ?, ?, ?, ?)");
 
         if($stmt){
-            //5 S. PRA 5 VARIAVEIS DE TIPO STRING
             $stmt->bind_param("sssss", $data_inicio, $data_fim, $titulo, $descricao, $cliente);
 
             if($stmt->execute()){
@@ -66,13 +52,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             $stmt->close();
         } else {
-            echo "<p style='color:red;'>Erro na preparação da query: " . $conn->error . "</p>";
+            echo "<p style='color:red;'>Erro na preparação da query: " . $connection->error . "</p>";
         }
 
-        $conn->close();
+        $connection->close();
     }
 
-}else{
+} else {
     echo "Acesso Negado";
     return;
 }
+?>
