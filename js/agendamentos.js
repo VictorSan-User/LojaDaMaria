@@ -54,6 +54,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+  function buscarAgendamentoPorId(id) {
+  fetch(`../Controllers/ControllerBuscarAgendamento.php?id=${id}`)
+    .then(res => {
+      if (!res.ok) throw new Error('Agendamento não encontrado');
+      return res.json();
+    })
+    .then(data => {
+      const container = document.getElementById('resultado-busca');
+      container.innerHTML = `
+        <div class="card shadow-sm mb-3" style="max-width:600px; width:100%;">
+          <div class="card-body">
+            <h5 class="card-title">${data.titulo}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Cliente: ${data.cliente}</h6>
+            <p class="card-text">${data.descricao}</p>
+            <p class="card-text"><small class="text-muted">Início: ${data.data_inicial} | Fim: ${data.data_final}</small></p>
+          </div>
+        </div>
+      `;
+    })
+    .catch(err => {
+      alert(err.message);
+    });
+}
+
 
   // Carrega a lista assim que o DOM estiver pronto
   carregarAgendamentos();

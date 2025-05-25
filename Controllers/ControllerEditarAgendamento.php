@@ -26,7 +26,7 @@ if ($result->num_rows === 0) {
 $atual = $result->fetch_assoc();
 $query->close();
 
-$data_inicio = !empty($_POST['data_inicial']) ? $_POST['data_inicial'] : $atual['data_inicial'];
+$data_inicio = !empty($_POST['data_inicial'])  ? $_POST['data_inicial']  : $atual['data_inicial'];
 $data_fim    = !empty($_POST['data_final'])    ? $_POST['data_final']    : $atual['data_final'];
 $titulo      = !empty($_POST['titulo'])        ? $_POST['titulo']        : $atual['titulo'];
 $descricao   = !empty($_POST['descricao'])     ? $_POST['descricao']     : $atual['descricao'];

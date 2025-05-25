@@ -60,7 +60,7 @@ class Compromisso{
         }
     }
     public static function listarFuturos($connect) {
-    $hoje = date('d-m-Y');
+    $hoje = date('Y-m-d');
     $stmt = $connect->prepare("SELECT * FROM tb_agendamentos WHERE data_inicial >= ? ORDER BY data_inicial ASC");
     $stmt->bind_param("s", $hoje);
     $stmt->execute();
@@ -86,6 +86,27 @@ class Compromisso{
             $agendamentos[] = $row;
         }
         return $agendamentos;
+    }
+    public static function buscarPorId($connect, $id) {
+        $stmt = $connect->prepare(
+            "SELECT id, data_inicial, data_final, titulo, descricao, cliente
+             FROM tb_agendamentos
+             WHERE id = ?"
+        );
+
+        if (!$stmt) {
+            return null;
+        }
+
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            return $row;
+        }
+
+        return null;
     }
 
 }
