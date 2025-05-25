@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('lista-futuros');
 
   function carregarAgendamentos() {
-    fetch('../') //finalizar o caminho
+    fetch('../Controllers/ControllerListagemFuturos.php') 
       .then(response => {
         if(!response.ok) throw new Error('Erro ao carregar agendamentos');
         return response.json();
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(e.target.classList.contains('btn-excluir')){
       const id = e.target.getAttribute('data-id');
       if(confirm('Quer mesmo excluir esse agendamento?')){
-        fetch(`../Controllers/CRUDphp/excluirAgendamento.php?id=${id}`, { method: 'DELETE' })
+        fetch(`../Controllers/ControllerExcluirAgendamentos.php.php?id=${id}`, { method: 'POST' })
           .then(res => res.text())
           .then(msg => {
             alert(msg);

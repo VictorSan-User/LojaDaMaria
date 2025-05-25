@@ -4,7 +4,7 @@ class Database {
         $host = 'localhost';
         $usuario = 'root';
         $senha = '';
-        $banco = 'TB_AGENDAMENTOS';
+        $banco = 'tb_agendamentos';
 
         $connection = new mysqli($host, $usuario, $senha, $banco);
 

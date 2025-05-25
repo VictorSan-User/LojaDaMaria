@@ -20,7 +20,7 @@ class Compromisso{
     }
 
     public function salvar(){
-        $dados = $this->connect->prepare("INSERT INTO TB_AGENDAMENTOS(data_inicial, data_final, titulo, descricao, cliente) VALUES(?, ?, ?, ?, ?)");
+        $dados = $this->connect->prepare("INSERT INTO tb_agendamentos(data_inicial, data_final, titulo, descricao, cliente) VALUES(?, ?, ?, ?, ?)");
 
         if($dados){
             $dados->bind_param("sssss", $this->data_inicio, $this->data_fim, $this->titulo, $this->descricao, $this->cliente);
@@ -33,7 +33,7 @@ class Compromisso{
         }
     }
     public function editar($id){
-        $editContent = $this->connect->prepare("UPDATE TB_AGENDAMENTOS SET data_inicial=?, data_final=?, titulo=?, descricao=?, cliente=? WHERE id=?");
+        $editContent = $this->connect->prepare("UPDATE tb_agendamentos SET data_inicial=?, data_final=?, titulo=?, descricao=?, cliente=? WHERE id=?");
         if($editContent){
             $editContent->bind_param("sssssi", $this->data_inicio, $this->data_fim, $this->titulo, $this->descricao, $this->cliente, $id);
             if($editContent->execute()){
@@ -46,7 +46,7 @@ class Compromisso{
         }
     }
     public function excluir($id) {
-        $stmt = $this->connect->prepare("DELETE FROM TB_AGENDAMENTOS WHERE id = ?");
+        $stmt = $this->connect->prepare("DELETE FROM tb_agendamentos WHERE id = ?");
         if($stmt){
             $stmt->bind_param("i", $id);
             if($stmt->execute()){
@@ -61,7 +61,7 @@ class Compromisso{
     }
     public static function listarFuturos($connect) {
     $hoje = date('d-m-Y');
-    $stmt = $connect->prepare("SELECT * FROM TB_AGENDAMENTOS WHERE data_inicial >= ? ORDER BY data_inicial ASC");
+    $stmt = $connect->prepare("SELECT * FROM tb_agendamentos WHERE data_inicial >= ? ORDER BY data_inicial ASC");
     $stmt->bind_param("s", $hoje);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -76,7 +76,7 @@ class Compromisso{
 
     public static function listarPassados($connect) {
         $hoje = date('d-m-Y');
-        $date = $connect->prepare("SELECT * FROM TB_AGENDAMENTOS WHERE data_final < ? ORDER BY data_inicial DESC");
+        $date = $connect->prepare("SELECT * FROM tb_agendamentos WHERE data_final < ? ORDER BY data_inicial DESC");
         $date->bind_param("s", $hoje);
         $date->execute();
         $result = $date->get_result();
