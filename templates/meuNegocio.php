@@ -22,11 +22,11 @@
         <i class="bi bi-pencil-fill me-2"></i>
         Editar Agendamento Existente
       </a>
-      <a href="#" class="list-group-item list-group-item-action">
+      <a href="listarAgendamentosFuturos.php" class="list-group-item list-group-item-action">
         <i class="bi bi-calendar-event me-2"></i> 
         Listar Agendamentos Futuros
       </a>
-      <a href="#" class="list-group-item list-group-item-action">
+      <a href="listarAgendamentosPassados.php" class="list-group-item list-group-item-action">
         <i class="bi bi-bookmark-check-fill me-2"></i>
         Listar Agendamentos Passados
       </a>
@@ -36,7 +36,7 @@
       </a>
     </div>
     <button class="btn btn-primary d-block mx-auto m-3 px-5">
-      <a href="index.html" class="ajustes_links text-white">
+      <a href="index.php" class="ajustes_links text-white">
         Voltar
       </a>
     </button>
