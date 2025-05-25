@@ -2,64 +2,61 @@
 include 'ControllerAgendamentos.php';
 include 'Database.php';
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $erros = [];
-
-    if(empty($_POST['id'])){
-        $erros[] = 'ID do agendamento é obrigatório!';
-        if(!is_numeric($_POST['id'])){
-            $erros[] = 'O ID tem que ser numerico';
-        }
-    }
-    if(empty($_POST['data_inicial'])){
-        $erros[] = 'Data Inicial Obrigatória';
-    }
-    if(empty($_POST['data_final'])){
-        $erros[] = 'Data Final Obrigatória';
-    }
-    if(empty($_POST['titulo'])){
-        $erros[] = 'Título Obrigatório';
-    }
-    if(empty($_POST['descricao'])){
-        $erros[] = 'Descrição Obrigatória';
-    }
-    if(empty($_POST['cliente'])){
-        $erros[] = 'Cliente Obrigatório';
-    }
-
-    if ($_POST['data_final'] < $_POST['data_inicial']) {
-        $erros[] = 'A Data Final deve ser após à Data Inicial.';
-    }
-
-    $id = $_POST['id'];
-    $data_inicio = $_POST['data_inicial'];
-    $data_fim = $_POST['data_final'];
-    $titulo = $_POST['titulo'];
-    $descricao = $_POST['descricao'];
-    $cliente = $_POST['cliente'];
-
-    if($erros){
-        foreach($erros as $erro){
-            echo "<p style='color:red;'>$erro</p>";
-        }
-    } else {
-        $connection = Database::connect();
-
-        $compromisso = new Compromisso($connection, $cliente, $descricao, $titulo, $data_fim, $data_inicio);
-
-        $resultado = $compromisso->editar($id);
-
-        if(is_array($resultado) && $resultado['success']){
-            echo "<p style='color:green;'>" . $resultado['message'] . "</p>";
-        } else {
-            echo "<p style='color:red;'>$resultado</p>";
-        }
-
-        $connection->close();
-    }
-
-} else {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo "Acesso Negado";
     return;
 }
+
+$id = $_POST['id'] ?? null;
+if (!$id || !is_numeric($id)) {
+    die("<p style='color:red;'>ID do agendamento inválido!</p>");
+}
+
+$connection = Database::connect();
+
+$query = $connection->prepare("SELECT data_inicial, data_final, titulo, descricao, cliente FROM tb_agendamentos WHERE id = ?");
+$query->bind_param("i", $id);
+$query->execute();
+$result = $query->get_result();
+
+if ($result->num_rows === 0) {
+    die("<p style='color:red;'>Agendamento não encontrado!</p>");
+}
+
+$atual = $result->fetch_assoc();
+$query->close();
+
+$data_inicio = !empty($_POST['data_inicial']) ? $_POST['data_inicial'] : $atual['data_inicial'];
+$data_fim    = !empty($_POST['data_final'])    ? $_POST['data_final']    : $atual['data_final'];
+$titulo      = !empty($_POST['titulo'])        ? $_POST['titulo']        : $atual['titulo'];
+$descricao   = !empty($_POST['descricao'])     ? $_POST['descricao']     : $atual['descricao'];
+$cliente     = !empty($_POST['cliente'])       ? $_POST['cliente']       : $atual['cliente'];
+
+if (strtotime($data_fim) < strtotime($data_inicio)) {
+    die("<p style='color:red;'>A Data Final deve ser após a Data Inicial.</p>");
+}
+
+$update = $connection->prepare("
+    UPDATE tb_agendamentos
+    SET data_inicial = ?, data_final = ?, titulo = ?, descricao = ?, cliente = ?
+    WHERE id = ?
+");
+$update->bind_param(
+    "sssssi",
+    $data_inicio,
+    $data_fim,
+    $titulo,
+    $descricao,
+    $cliente,
+    $id
+);
+
+if ($update->execute()) {
+    echo "<p style='color:green;'>Agendamento atualizado com sucesso!</p>";
+} else {
+    echo "<p style='color:red;'>Erro ao atualizar: " . $update->error . "</p>";
+}
+
+$update->close();
+$connection->close();
 ?>
