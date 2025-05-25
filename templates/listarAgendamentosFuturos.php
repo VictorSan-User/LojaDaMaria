@@ -10,26 +10,14 @@
 <div class="container py-5">
   <h1 class="mb-4 text-center">Agendamento para os Próximos dias</h1>
 
-  <table class="table table-striped table-hover">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Data Inicial</th>
-        <th>Data Final</th>
-        <th>Título</th>
-        <th>Cliente</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php
-      // Aqui entra o PHP que busca os agendamentos.
-      ?>
-    </tbody>
-  </table>
+  <!-- Cards dos compromissos -->
+    <div id="lista-futuros" class="d-flex flex-column gap-3">
+
+    </div>
 
   <a href="meuNegocio.php" class="btn btn-secondary d-block mx-auto mt-3">Voltar</a>
 </div>
 
+  <script src="../js/agendamentos.js"></script>
 </body>
 </html>
