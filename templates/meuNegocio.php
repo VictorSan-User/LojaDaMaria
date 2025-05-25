@@ -30,7 +30,7 @@
         <i class="bi bi-bookmark-check-fill me-2"></i>
         Listar Agendamentos Passados
       </a>
-      <a href="#" class="list-group-item list-group-item-action text-danger">
+      <a href="excluirAgendamento.html" class="list-group-item list-group-item-action text-danger">
         <i class="bi bi-trash-fill me-2"></i>
         Excluir Agendamento
       </a>

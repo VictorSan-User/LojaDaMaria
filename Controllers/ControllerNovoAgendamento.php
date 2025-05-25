@@ -1,5 +1,6 @@
 <?php
 include 'ControllerAgendamentos.php';
+include 'Database.php';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $erros = [];
@@ -28,18 +29,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     } else {
         echo "<p style='color:green;'>Dados validados com sucesso!</p>";
 
-        $host = 'localhost';
-        $usuario = 'root';
-        $senha = '';
-        $banco = 'tb_agendamentos';
+        $connection = Database::connect();
 
-        $connection = new mysqli($host, $usuario, $senha, $banco);
-
-        if($connection->connect_error){
-            die("Falha na conexão: " . $connection->connect_error);
-        }
-
-        $stmt = $connection->prepare("INSERT INTO tb_agendamentos (data_inicial, data_final, titulo, descricao, cliente) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO TB_AGENDAMENTOS (data_inicial, data_final, titulo, descricao, cliente) VALUES (?, ?, ?, ?, ?)");
 
         if($stmt){
             $stmt->bind_param("sssss", $data_inicio, $data_fim, $titulo, $descricao, $cliente);
