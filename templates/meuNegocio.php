@@ -18,7 +18,7 @@
         <i class="bi bi-bookmark-plus me-2"></i>
         Criar Novo Agendamento
       </a>
-      <a href="editarAgenamentos.html" class="list-group-item list-group-item-action">
+      <a href="buscaID.html" class="list-group-item list-group-item-action">
         <i class="bi bi-pencil-fill me-2"></i>
         Editar Agendamento Existente
       </a>
