@@ -18,7 +18,7 @@
         <i class="bi bi-bookmark-plus me-2"></i>
         Criar Novo Agendamento
       </a>
-      <a href="buscaID.html" class="list-group-item list-group-item-action">
+      <a href="buscarIDtoEdit.html" class="list-group-item list-group-item-action">
         <i class="bi bi-pencil-fill me-2"></i>
         Editar Agendamento Existente
       </a>
@@ -30,7 +30,7 @@
         <i class="bi bi-bookmark-check-fill me-2"></i>
         Listar Agendamentos Passados
       </a>
-      <a href="excluirAgendamento.html" class="list-group-item list-group-item-action text-danger">
+      <a href="buscaIDtoExcluir.html" class="list-group-item list-group-item-action text-danger">
         <i class="bi bi-trash-fill me-2"></i>
         Excluir Agendamento
       </a>
