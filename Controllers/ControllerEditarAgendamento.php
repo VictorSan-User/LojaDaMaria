@@ -1,62 +1,64 @@
 <?php
-include 'ControllerAgendamentos.php';
 include 'Database.php';
+include 'ControllerAgendamentos.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo "Acesso Negado";
-    return;
-}
-
-$id = $_POST['id'] ?? null;
-if (!$id || !is_numeric($id)) {
-    die("<p style='color:red;'>ID do agendamento inválido!</p>");
+    die("<p style='color:red;'>Requisição inválida!</p>");
 }
 
 $connection = Database::connect();
 
-$query = $connection->prepare("SELECT data_inicial, data_final, titulo, descricao, cliente FROM tb_agendamentos WHERE id = ?");
-$query->bind_param("i", $id);
-$query->execute();
-$result = $query->get_result();
+$id = $_POST['id'] ?? null;
+$titulo = $_POST['titulo'] ?? '';
 
-if ($result->num_rows === 0) {
-    die("<p style='color:red;'>Agendamento não encontrado!</p>");
+if (!is_numeric($id)) {
+    die("<p style='color:red;'>ID inválido!</p>");
 }
 
-$atual = $result->fetch_assoc();
-$query->close();
+$compromisso = new Compromisso($connection, '', '', '', '', '');
 
-$data_inicio = !empty($_POST['data_inicial'])  ? $_POST['data_inicial']  : $atual['data_inicial'];
-$data_fim    = !empty($_POST['data_final'])    ? $_POST['data_final']    : $atual['data_final'];
-$titulo      = !empty($_POST['titulo'])        ? $_POST['titulo']        : $atual['titulo'];
-$descricao   = !empty($_POST['descricao'])     ? $_POST['descricao']     : $atual['descricao'];
-$cliente     = !empty($_POST['cliente'])       ? $_POST['cliente']       : $atual['cliente'];
+$dadosCompromisso = $compromisso->buscarPorId($connection, $id);
 
-if (strtotime($data_fim) < strtotime($data_inicio)) {
-    die("<p style='color:red;'>A Data Final deve ser após a Data Inicial.</p>");
+if (!$dadosCompromisso) {
+    die("<p style='color:red;'>Compromisso não encontrado!</p>");
 }
 
-$update = $connection->prepare("
-    UPDATE tb_agendamentos
-    SET data_inicial = ?, data_final = ?, titulo = ?, descricao = ?, cliente = ?
-    WHERE id = ?
-");
-$update->bind_param(
-    "sssssi",
-    $data_inicio,
-    $data_fim,
-    $titulo,
-    $descricao,
-    $cliente,
-    $id
-);
+$dadosAtualizados = [
+    'id' => $id,
+    'data_inicio' => $dadosCompromisso->data_inicio,
+    'data_fim' => $dadosCompromisso->data_fim,
+    'titulo' => $dadosCompromisso->titulo,
+    'descricao' => $dadosCompromisso->descricao,
+    'cliente' => $dadosCompromisso->cliente
+];
 
-if ($update->execute()) {
-    echo "<p style='color:green;'>Agendamento atualizado com sucesso!</p>";
+// Faz a edição
+$resultado = $compromisso->editar($dadosAtualizados);
+
+if (is_array($resultado) && ($resultado['success'] ?? false)) {
+    echo '
+    <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Compromisso Editado</title>
+        <style>
+            body { font-family: Arial; background: #f0fff4; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+            .alerta-sucesso { background: #28a745; color: white; padding: 20px; border-radius: 8px; text-align: center; }
+            .btn-voltar { background: #19692c; color: white; padding: 10px; border-radius: 5px; text-decoration: none; }
+            .btn-voltar:hover { background: #145a22; }
+        </style>
+    </head>
+    <body>
+        <div class="alerta-sucesso">
+            <h2>Agendamento "' . htmlspecialchars($titulo) . '" editado com sucesso!</h2>
+            <a href="../templates/meuNegocio.php" class="btn-voltar">Voltar</a>
+        </div>
+    </body>
+    </html>
+    ';
 } else {
-    echo "<p style='color:red;'>Erro ao atualizar: " . $update->error . "</p>";
+    $erro = htmlspecialchars($resultado['error'] ?? 'Erro ao editar compromisso');
+    echo "<p style='color:red;'>$erro</p>";
+    echo "<a href='../Views/editarAgendamentos.php?id=$id'>Voltar</a>";
 }
-
-$update->close();
-$connection->close();
-?>
