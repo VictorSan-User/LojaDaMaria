@@ -1,6 +1,6 @@
 A proposta é criar um sistema simples de agendamentos, permitindo que a Maria gerencie com eficiência seus compromissos, substituindo sua agenda física por uma aplicação web intuitiva.
 Funcionalidades
-✅ Listar agendamentos futuros (a partir de hoje)
+<br>✅ Listar agendamentos futuros (a partir de hoje)
 ✅ Listar agendamentos passados (antes de hoje)
 ✅ Criar novo agendamento
 ✅ Editar agendamento existente
