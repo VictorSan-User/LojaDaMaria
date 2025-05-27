@@ -13,9 +13,7 @@
     <div class="container text-center mt-3 py-5">
         <div class="row m-4 p-5 bg-primary rounded">
             <div class="col mt-5 p-5 text-white text-start">
-                <h4 class="m-1 p-3"><a href="meuNegocio.php" class="col-6 bg-white rounded px-4 py-2 ajustes_links d-flex justify-content-center">Meu Negócio</a></h4>
-                <h4 class="m-1 p-3"><a href="estatisticas.html" class="col-6 bg-white rounded px-4 py-2 ajustes_links d-flex justify-content-center">Estatísticas</a></h4>
-                
+                <h4 class="m-1 p-3"><a href="meuNegocio.php" class="col-6 bg-white rounded px-4 py-2 ajustes_links d-flex justify-content-center">Meu Negócio</a></h4
             </div>
             <div class="col mt-5 p-5 text-white text-end">
                 <h1>Consultoria em Vendas</h1>
