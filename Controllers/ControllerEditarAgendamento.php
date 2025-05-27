@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $connection = Database::connect();
 
-$id = $_POST['id'] ?? null;
+$id     = $_POST['id']     ?? null;
 $titulo = $_POST['titulo'] ?? '';
 
 if (!is_numeric($id)) {
@@ -24,15 +24,14 @@ if (!$dadosCompromisso) {
 }
 
 $dadosAtualizados = [
-    'id' => $id,
-    'data_inicio' => $dadosCompromisso->data_inicio,
-    'data_fim' => $dadosCompromisso->data_fim,
-    'titulo' => $dadosCompromisso->titulo,
-    'descricao' => $dadosCompromisso->descricao,
-    'cliente' => $dadosCompromisso->cliente
+    'id'          => $id,
+    'data_inicio' => $dadosCompromisso['data_inicio'],
+    'data_fim'    => $dadosCompromisso['data_fim'],
+    'titulo'      => $titulo,
+    'descricao'   => $dadosCompromisso['descricao'],
+    'cliente'     => $dadosCompromisso['cliente'],
 ];
 
-// Faz a edição
 $resultado = $compromisso->editar($dadosAtualizados);
 
 if (is_array($resultado) && ($resultado['success'] ?? false)) {
