@@ -88,7 +88,7 @@ class Compromisso{
         return $agendamentos;
     }
     public static function buscarPorId($connect, $id) {
-    $stmt = $connect->prepare("SELECT * FROM tb_agendamentos WHERE id=?");
+    $stmt = $connect->prepare("SELECT * FROM tb_agendamentos WHERE id= :id");
 
     if (!$stmt) return null;
 
