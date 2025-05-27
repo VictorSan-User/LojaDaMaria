@@ -42,8 +42,6 @@
                 <p class="card-text"><small class="text-muted">
                   Início: ${item.data_inicial} | Fim: ${item.data_final}
                 </small></p>
-                <a href="editarAgendamento.html?id=${item.id}" class="btn btn-primary btn-sm me-2">Editar</a>
-                <button class="btn btn-danger btn-sm btn-excluir" data-id="${item.id}">Excluir</button>
               </div>`;
             container.appendChild(card);
           });
